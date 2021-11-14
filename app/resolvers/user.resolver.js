@@ -4,9 +4,10 @@ const resolvers = {
     Query : {
 
         getAllUsers : async () => {
-            return await Post.find() 
-
+            return await Post.find()
         },
+
+        
     },
 
     Mutation: {
@@ -17,6 +18,14 @@ const resolvers = {
             return user
         },
 
+        loginUser : async (parent, args, context, info) => {
+            const login = {
+                email : args.email,
+                password : args.password
+            }
+            
+        }
+        
     }
 };
 
