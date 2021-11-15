@@ -1,6 +1,8 @@
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 
+require('dotenv').config()
+
 const typeDefs = require('./app/typeDefs/user.schema');
 const resolvers = require('./app/resolvers/user.resolver');
 const dbconfig = require('./config/db.config')
@@ -23,6 +25,6 @@ async function startServer(){
     });
 
 
-    app.listen(4000, () => console.log('server is running on port 4000'))
+    app.listen(process.env.PORT, () => console.log('server is running on port 4000'))
 }
 startServer();

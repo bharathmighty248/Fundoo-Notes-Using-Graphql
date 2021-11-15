@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 exports.dbConnection=()=>{
     mongoose.Promise = global.Promise;
-    mongoose.connect( "mongodb://localhost:27017/Fundoonotes-App", {
+    mongoose.connect( process.env.DB_URL, {
         useNewUrlParser: true
     }).then(() => {
         console.log("Successfully connected to the database");
