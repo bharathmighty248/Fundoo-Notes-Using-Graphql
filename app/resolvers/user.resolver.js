@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model')
-const joiValidation = require('../validations/validation')
+const joiValidation = require('../../utilities/validation')
 const Apolloerror = require('apollo-server-errors')
+const bcrypt = require('bcryptjs');
 
 const resolvers = {
     Query : {
@@ -47,6 +48,11 @@ const resolvers = {
             const userPresent = await userModel.findOne({ email: path.email });
             if(!userPresent){
                 return new Apolloerror.AuthenticationError("Email id is not registered");
+            }
+
+            const isMatch = await bcrypt.compare(path.password, userPresent.password);
+            if(!isMatch){
+                return new Apolloerror.AuthenticationError("Incorrect Password");
             }
 
             return {
