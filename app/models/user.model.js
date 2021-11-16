@@ -19,8 +19,9 @@ const UserSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
-});
+},
+    {
+        timestamps: true
+    });
 
-const Post = mongoose.model('post', UserSchema)
-
-module.exports = Post;
+module.exports = mongoose.model('userModel', UserSchema)
