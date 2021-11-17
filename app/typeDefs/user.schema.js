@@ -9,6 +9,15 @@ type User{
     password : String!
 },
 
+type AuthUser{
+    id : ID!
+    firstName : String!
+    lastName : String!
+    email : String!
+    password : String!
+    token: String
+},
+
 input UserInput{
     firstName : String!
     lastName : String!
@@ -21,6 +30,7 @@ type Login{
     firstName: String!
     lastName: String!
     email : String!
+    token : String!
 
 },
 
@@ -30,7 +40,7 @@ input LoginInput{
 },
 
 type Query{
-    getAllUsers : [User] 
+    getAllUsers : [AuthUser] 
 },
 
 type Mutation {

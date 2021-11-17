@@ -55,11 +55,14 @@ const resolvers = {
                 return new Apolloerror.AuthenticationError("Incorrect Password");
             }
 
+            const token = await userPresent.generateAuthToken();
+
             return {
                 id: userPresent.id,
                 firstName: userPresent.firstName,
                 lastName: userPresent.lastName,
-                email: userPresent.email
+                email: userPresent.email,
+                token: userPresent.token
             }
         }
         
