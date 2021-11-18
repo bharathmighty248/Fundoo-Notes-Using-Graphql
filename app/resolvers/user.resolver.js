@@ -3,6 +3,7 @@ const joiValidation = require('../../utilities/validation')
 const Apolloerror = require('apollo-server-errors')
 const bcryptPassword = require('../../utilities/bcrypt.hash');
 const bcrypt = require('bcryptjs');
+const jwt = require('../../utilities/jwt.token');
 
 const resolvers = {
     Query : {
@@ -59,19 +60,18 @@ const resolvers = {
             }
 
             const isMatch = await bcrypt.compare(path.password, userPresent.password);
-            console.log(userPresent.password);
             if(!isMatch){
                 return new Apolloerror.AuthenticationError("Incorrect Password");
             }
 
-            const token = await userPresent.generateAuthToken();
+            const token = jwt.getToken(userPresent);
 
             return {
                 id: userPresent.id,
                 firstName: userPresent.firstName,
                 lastName: userPresent.lastName,
                 email: userPresent.email,
-                token: userPresent.token
+                token
             }
         }
         
