@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model')
 const joiValidation = require('../../utilities/validation')
 const Apolloerror = require('apollo-server-errors')
+const bcryptPassword = require('../../utilities/bcrypt.hash');
 const bcrypt = require('bcryptjs');
 
 const resolvers = {
@@ -30,7 +31,14 @@ const resolvers = {
                 return new Apolloerror.UserInputError("Email already exists");
             }
 
-            usermodel.save();
+            bcryptPassword.hashpassword(path.password, (error, data) => {
+                if (data) {
+                  usermodel.password = data;
+                } else {
+                  throw error;
+                }
+                usermodel.save();
+            });
             return usermodel;
         },
 
@@ -51,6 +59,7 @@ const resolvers = {
             }
 
             const isMatch = await bcrypt.compare(path.password, userPresent.password);
+            console.log(userPresent.password);
             if(!isMatch){
                 return new Apolloerror.AuthenticationError("Incorrect Password");
             }
