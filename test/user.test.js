@@ -20,6 +20,7 @@ describe("Query", () => {
                 firstName
                 lastName
                 email
+                password
             }
         }`;
 
@@ -29,7 +30,8 @@ describe("Query", () => {
                     id: "61960dab3937e474cb2bf88a",
                     firstName: "bharath",
                     lastName: "pasumarthi",
-                    email: "bharathtest8@gmail.com"
+                    email: "bharathtest8@gmail.com",
+                    password: "bharath@8"
                 }]
             }
         }
@@ -39,7 +41,7 @@ describe("Query", () => {
         expect(result.data.getAllUsers[0].firstName).toBe("bharath");
         expect(result.data.getAllUsers[0].lastName).toBe("pasumarthi");
         expect(result.data.getAllUsers[0].email).toBe("bharathtest8@gmail.com");
-
+        expect(result.data.getAllUsers[0].password).toBe("bharath@8");
     });
 });
 
@@ -54,7 +56,7 @@ describe("Mutations", () => {
 
         test("Given_registerUser_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
-            mutation registerUser($path : UserInput!) {
+            mutation registerUser($path : UserInput) {
                 registerUser(path: $path) {
                     firstName
                     lastName
@@ -63,11 +65,11 @@ describe("Mutations", () => {
                 }
             }
             `;
-            tester.test(false, mutation, {});
+            tester.test(false, mutation, {path:{}});
         });
         test("Given_registerUser_MutationShouldPass_IfTheFirstArg_IsFalse_And_TheInputHasInvalidField", () => {
             const mutation = `
-            mutation registerUser($path: UserInput!) {
+            mutation registerUser($path: UserInput) {
                 registerUser(path: $path) {
                     firstName
                     lastName
@@ -76,26 +78,32 @@ describe("Mutations", () => {
                 }
             }
             `;
-            tester.test(false, mutation, [
-                {
+            tester.test(false, mutation, {
+                path: {
                     firstName: "bharath",
                     lastName: "pasumaarthi",
-                    email: "bharathtest9@@gmail.com" 
+                    email: "bharathtest9@gmail.com"
                 }
-            ]);
+            });
         });
         test("Given_registerUser_MutationShouldPass_IfTheFirstArgIsTrue_And_TheInputIsValid", () => {
             const mutation = `
             mutation registerUser($path: UserInput) {
                 registerUser(path: $path) {
                     firstName
+                    lastName
+                    email
+                    password
                 }
             }
             `;
             tester.test(true, mutation, {
-                firstName: "bharath",
-                lastName: "pasumarthi",
-                email: "bharathtest9@gmail.com"
+                path:{
+                    firstName: "bharath",
+                    lastName: "pasumarthi",
+                    email: "bharathtest9@gmail.com",
+                    password: "bharath@9"
+                }
             });
         });
 
@@ -104,21 +112,20 @@ describe("Mutations", () => {
 
         test("Given_loginUser_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
-            mutation loginUser($input:LoginInput) {
-                loginUser(input: $input) {
+            mutation loginUser($path:LoginInput) {
+                loginUser(path: $path) {
                     id
-                    token
                     firstName
                     lastName
                     email
                 }
               }
             `;
-            tester.test(false, mutation, {});
+            tester.test(false, mutation, {path:{}});
         });
         test("Given_loginUser_MutationShouldPass_IfTheFirstArg_IsFalse_And_TheInputHasInvalidField", () => {
             const mutation = `
-            mutation loginUser($path:InvalidInput) {
+            mutation loginUser($path:LoginInput) {
                 loginUser(path: $path) {
                     id
                     firstName
@@ -127,13 +134,13 @@ describe("Mutations", () => {
                 }
             }
             `;
-            tester.test(false, mutation, [
-                {
+            tester.test(false, mutation, {
+                path:{
                     firstName: "bharath",
                     lastName: "pasumarthi",
                     email: "bharathtest10@gmail.com"
                 }
-            ]);
+            });
         });
         test("Given_loginUser_MutationShouldPass_IfTheFirstArgIsTrue_And_TheInputIsValid", () => {
             const mutation = `
@@ -146,13 +153,12 @@ describe("Mutations", () => {
                 }
             }
             `;
-            tester.test(true, mutation, [
-                {
-                    firstName: "bharath",
-                    lastName: "pasumarthi",
-                    email: "bharathtest8@gmail.com"
+            tester.test(true, mutation, {
+                path:{
+                    email: "bharathtest8@gmail.com",
+                    password: "bharath@8"
                 }
-            ]);
+            });
         });  
     });    
 });
