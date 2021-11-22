@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
+
 class GetToken {
+    // eslint-disable-next-line class-methods-use-this
     getToken = (details) => {
         const token = jwt.sign({
             id: details._id,
@@ -8,4 +10,4 @@ class GetToken {
         return token;
     }
 }
-module.exports=new GetToken();
+module.exports = new GetToken();

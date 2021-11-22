@@ -2,9 +2,7 @@ const EasyGraphQLTester = require('easygraphql-tester');
 const fs = require('fs');
 const path = require('path');
 
-const userSchema = fs.readFileSync(
-    path.join(__dirname, ".", "schema.gql"), "utf8"
-);
+const userSchema = fs.readFileSync(path.join(__dirname, ".", "schema.gql"), "utf8");
 
 describe("Query", () => {
     let tester;
@@ -31,9 +29,9 @@ describe("Query", () => {
                     firstName: "bharath",
                     lastName: "pasumarthi",
                     email: "bharathtest8@gmail.com",
-                    password: "bharath@8"
-                }]
-            }
+                    password: "bharath@8",
+                }],
+            },
         }
         tester.setFixture(fixture);
         const result = tester.mock({ query });
@@ -52,7 +50,7 @@ describe("Mutations", () => {
     });
 
     describe("Mutations", () => {
-        //registerUser Testcases
+        // registerUser Testcases
 
         test("Given_registerUser_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
@@ -65,7 +63,7 @@ describe("Mutations", () => {
                 }
             }
             `;
-            tester.test(false, mutation, {path:{}});
+            tester.test(false, mutation, { path:{} });
         });
         test("Given_registerUser_MutationShouldPass_IfTheFirstArg_IsFalse_And_TheInputHasInvalidField", () => {
             const mutation = `
@@ -108,7 +106,7 @@ describe("Mutations", () => {
         });
 
 
-        //loginUser testcases
+        // loginUser testcases
 
         test("Given_loginUser_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
@@ -121,7 +119,7 @@ describe("Mutations", () => {
                 }
               }
             `;
-            tester.test(false, mutation, {path:{}});
+            tester.test(false, mutation, { path:{} });
         });
         test("Given_loginUser_MutationShouldPass_IfTheFirstArg_IsFalse_And_TheInputHasInvalidField", () => {
             const mutation = `
@@ -159,6 +157,6 @@ describe("Mutations", () => {
                     password: "bharath@8"
                 }
             });
-        });  
-    });    
+        });
+    });
 });

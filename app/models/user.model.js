@@ -1,14 +1,14 @@
-const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+    {
     firstName: {
         type: String,
-        required: true
+        required: true,
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
@@ -18,11 +18,12 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
-    }
+        minlength: 6,
+    },
 },
     {
-        timestamps: true
-    });
+        timestamps: true,
+    },
+    );
 
 module.exports = mongoose.model('userModel', UserSchema)

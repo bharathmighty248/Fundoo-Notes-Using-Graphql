@@ -9,7 +9,7 @@ const dbconfig = require('./config/db.config')
 
 dbconfig.dbConnection();
 
-async function startServer(){
+async function startServer() {
     const app = express()
     const apolloServer = new ApolloServer({
         typeDefs,
