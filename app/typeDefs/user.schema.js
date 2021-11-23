@@ -29,6 +29,15 @@ input LoginInput{
     password : String!
 },
 
+type sentMail{
+    email: String
+    message: String
+}
+
+input forgotPassword{
+    email: String!
+}
+
 type Query{
     getAllUsers : [User] 
 },
@@ -36,6 +45,7 @@ type Query{
 type Mutation {
     registerUser( path : UserInput ):User
     loginUser( path : LoginInput ):Login
+    forgotPassword( path : forgotPassword ):sentMail
 }
 `;
 
