@@ -89,7 +89,36 @@ const resolvers = {
                 email: path.email,
                 message: "Reset Code Sent to Registered email Successfully"
             }
-        }
+        },
+
+        resetPassword : async (_, { path }) => {
+            const userPresent = await userModel.findOne({ email: path.email });
+            if (!userPresent) {
+                return new Apolloerror.UserInputError(" You are Not Registered. Please Register User");
+            }
+            const checkcode = await codeModel.findOne({
+                email: path.email,
+                resetcode: path.resetcode
+            });
+            if (!checkcode) {
+                return new Apolloerror.UserInputError("Invalid reset code or reset code expired. Please continue again with forgot Password");
+            }
+
+            bcryptPassword.hashpassword(path.newPassword, (error, data) => {
+                if (data) {
+                  userPresent.password = data;
+                } else {
+                  throw error;
+                }
+                userPresent.save();
+            });
+            return {
+                id: userPresent.id,
+                firstName: userPresent.firstName,
+                lastName: userPresent.lastName,
+                email: userPresent.email,
+            };
+        },
     }
 };
 
