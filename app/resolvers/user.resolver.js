@@ -1,11 +1,10 @@
 const Apolloerror = require('apollo-server-errors');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
 const userModel = require('../models/user.model');
-const codeModel = require('../models/resetcode.model');
 const joiValidation = require('../../utilities/validation');
 const bcryptPassword = require('../../utilities/bcrypt.hash');
 const jwt = require('../../utilities/jwt.token');
+const forgotAndReset = require('../../utilities/forgot.reset');
 
 const resolvers = {
     Query : {
@@ -80,28 +79,8 @@ const resolvers = {
             if (!userPresent) {
                 return new Apolloerror.AuthenticationError("Email id is not registered");
             }
-            const resetcode = Math.random().toString(36).substring(2,12);
-            const code = new codeModel({ email : path.email,resetcode });
-            await code.save();
 
-            const transporter = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                  user: process.env.MAIL_SENDER,
-                  pass: process.env.PASSWORD,
-                },
-                tls: {
-                  rejectUnauthorized: false
-                }
-            });
-
-            transporter.sendMail({
-                from: process.env.MAIL_SENDER,
-                to: path.email,
-                subject: "Your Password Reset Code",
-                text: resetcode
-            })
-
+            forgotAndReset.sendEmail(userPresent.email);
             return {
                 email: path.email,
                 message: "Reset Code Sent to Registered email Successfully"
