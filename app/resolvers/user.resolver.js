@@ -1,6 +1,7 @@
 const Apolloerror = require('apollo-server-errors');
 const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
+const codeModel = require('../models/resetcode.model');
 const joiValidation = require('../../utilities/validation');
 const bcryptPassword = require('../../utilities/bcrypt.hash');
 const jwt = require('../../utilities/jwt.token');
@@ -79,7 +80,10 @@ const resolvers = {
             if (!userPresent) {
                 return new Apolloerror.AuthenticationError("Email id is not registered");
             }
-
+            const codePresent = await codeModel.findOne({ email: path.email });
+            if (codePresent) {
+                return { message: "Reset code is already sent to registered email. Please check Spam or Try after 60 seconds.. " };
+            }
             forgotAndReset.sendEmail(userPresent.email);
             return {
                 email: path.email,
