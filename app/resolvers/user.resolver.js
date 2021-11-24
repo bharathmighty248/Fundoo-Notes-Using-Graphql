@@ -92,6 +92,17 @@ const resolvers = {
         },
 
         resetPassword : async (_, { path }) => {
+            const resetPassword = {
+                email: path.email,
+                newPassword: path.newPassword,
+                resetcode: path.resetcode
+            };
+
+            const Validation = joiValidation.authResetPassword.validate(resetPassword);
+            if (Validation.error) {
+                return new Apolloerror.ValidationError(Validation.error);
+            }
+
             const userPresent = await userModel.findOne({ email: path.email });
             if (!userPresent) {
                 return new Apolloerror.UserInputError(" You are Not Registered. Please Register User");
