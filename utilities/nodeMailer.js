@@ -21,8 +21,8 @@ class forgotReset {
                 from: process.env.MAIL_SENDER,
                 to: details,
                 subject: "Your Password Reset Code",
-                text: resetcode
-            })
+                text: `Use this code to reset your password: ${resetcode} `
+            });
 
             const code = new codeModel({ email : details,resetcode });
             code.save();
