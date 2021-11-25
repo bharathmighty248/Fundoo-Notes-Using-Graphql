@@ -5,7 +5,7 @@ const codeModel = require('../models/resetcode.model');
 const joiValidation = require('../../utilities/validation');
 const bcryptPassword = require('../../utilities/bcrypt.hash');
 const jwt = require('../../utilities/jwt.token');
-const forgotAndReset = require('../../utilities/forgot.reset');
+const nodeMailer = require('../../utilities/nodeMailer');
 
 const resolvers = {
     Query : {
@@ -84,7 +84,7 @@ const resolvers = {
             if (codePresent) {
                 return { message: "Reset code is already sent to registered email. Please check Spam or Try after 60 seconds.. " };
             }
-            forgotAndReset.sendEmail(userPresent.email);
+            nodeMailer.sendEmail(userPresent.email);
             return {
                 email: path.email,
                 message: "Reset Code Sent to Registered email Successfully"

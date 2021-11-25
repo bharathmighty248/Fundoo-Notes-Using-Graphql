@@ -8,7 +8,7 @@ const codeSchema = mongoose.Schema({
   expireAt: {
     type: Date,
     default: Date.now,
-    index: { expireAfterSeconds: 60 },
+    index: { expireAfterSeconds: 180 },
   },
 });
 
