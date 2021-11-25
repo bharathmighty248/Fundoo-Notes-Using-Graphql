@@ -204,5 +204,60 @@ describe("Mutations", () => {
                 }
             });
         });
+
+        // reset password test cases
+
+        test("Given_resetPassword_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation resetPassword($path:resetPassword) {
+                resetPassword(path: $path) {
+                    id
+                    firstName
+                    lastName
+                    email
+                }
+              }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+
+        test("Given_resetPassword_MutationShouldPass_IfTheFirstArgIsFalse_TheInputHasInvalidField", () => {
+            const mutation = `
+            mutation resetPassword($path:resetPassword) {
+                resetPassword(path: $path) {
+                    id
+                    firstName
+                    lastName
+                    email
+                }
+              }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    email: "bharathpasumarthi248@gmail.com",
+                    newPassword: "bharath@9010"
+                }
+            });
+        });
+
+        test("Given_resetPassword_MutationShouldPass_IfTheFirstArgIsTrue_TheInputHasvalidField", () => {
+            const mutation = `
+            mutation resetPassword($path:resetPassword) {
+                resetPassword(path: $path) {
+                    id
+                    firstName
+                    lastName
+                    email
+                }
+              }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    email: "bharathpasumarthi248@gmail.com",
+                    resetcode: "ml8brhgk6t",
+                    newPassword: "bharath@9010"
+                }
+            });
+        });
     });
 });
