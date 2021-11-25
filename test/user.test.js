@@ -158,5 +158,51 @@ describe("Mutations", () => {
                 }
             });
         });
+
+        // forgot password testcases
+
+        test("Given_forgotPassword_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation forgotPassword($path:forgotPassword) {
+                forgotPassword(path: $path) {
+                    email
+                    message
+                }
+              }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+
+        test("Given_forgotPassword_MutationShouldPass_IfTheFirstArgIsFalse_TheInputHasInvalidField", () => {
+            const mutation = `
+            mutation forgotPassword($path:forgotPassword) {
+                forgotPassword(path: $path) {
+                    email
+                    message
+                }
+              }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    password: "bharath@248"
+                }
+            });
+        });
+
+        test("Given_forgotPassword_MutationShouldPass_IfTheFirstArgIsTrue_TheInputHasvalidField", () => {
+            const mutation = `
+            mutation forgotPassword($path:forgotPassword) {
+                forgotPassword(path: $path) {
+                    email
+                    message
+                }
+              }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    email: "bharathpasumarthi248@gmail.com"
+                }
+            });
+        });
     });
 });
