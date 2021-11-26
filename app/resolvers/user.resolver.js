@@ -7,7 +7,7 @@ const bcryptPassword = require('../../utilities/bcrypt.hash');
 const jwt = require('../../utilities/jwt.token');
 const nodeMailer = require('../../utilities/nodeMailer');
 
-const resolvers = {
+const userresolver = {
     Query : {
 
         getAllUsers : async () => await userModel.find()
@@ -133,4 +133,4 @@ const resolvers = {
     }
 };
 
-module.exports = resolvers;
+module.exports = userresolver;

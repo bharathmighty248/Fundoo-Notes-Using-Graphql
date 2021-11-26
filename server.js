@@ -3,8 +3,8 @@ const { ApolloServer } = require('apollo-server-express')
 
 require('dotenv').config()
 
-const typeDefs = require('./app/typeDefs/user.schema');
-const resolvers = require('./app/resolvers/user.resolver');
+const typeDefs = require('./app/typeDefs/index');
+const resolvers = require('./app/resolvers/index');
 const dbconfig = require('./config/db.config');
 const logger = require('./config/logger');
 
