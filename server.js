@@ -5,7 +5,8 @@ require('dotenv').config()
 
 const typeDefs = require('./app/typeDefs/user.schema');
 const resolvers = require('./app/resolvers/user.resolver');
-const dbconfig = require('./config/db.config')
+const dbconfig = require('./config/db.config');
+const logger = require('./config/logger');
 
 dbconfig.dbConnection();
 
@@ -21,10 +22,10 @@ async function startServer() {
     apolloServer.applyMiddleware({ app });
 
     app.use((req,res) => {
-        res.send("hello from express apollo server");
+        res.send("hello from apollo server");
     });
 
 
-    app.listen(process.env.PORT, () => console.log('server is running on port 4000'))
+    app.listen(process.env.PORT, () => logger.info('server is running on port 4000'))
 }
 startServer();
