@@ -22,6 +22,7 @@ const notetypeDefs = gql`
 
     type Mutation {
         createNote(path: NoteInput): Note
+        editNote(id: ID, path: NoteInput): Note
     }
 `;
 

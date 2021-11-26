@@ -23,6 +23,20 @@ const noteresolver = {
             }
             await notes.save();
             return notes
+        },
+
+        editNote: async (_,args) => {
+            const { id } = args
+            const { title, description } = args.path;
+            const updates = {}
+            if (title !== undefined) {
+                updates.title = title
+            }
+            if (description !== undefined) {
+                updates.description = description
+            }
+            const notes = await noteModel.findByIdAndUpdate(id, updates, { new: true });
+            return notes;
         }
 
     }
