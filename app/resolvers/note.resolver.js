@@ -37,8 +37,13 @@ const noteresolver = {
             }
             const notes = await noteModel.findByIdAndUpdate(id, updates, { new: true });
             return notes;
-        }
+        },
 
+        deleteNote: async (_,args) => {
+            const { id } = args
+            await noteModel.findByIdAndDelete(id);
+            return "ok, Post deleted"
+        }
     }
 }
 
