@@ -26,8 +26,7 @@ const noteresolver = {
         },
 
         editNote: async (_,args) => {
-            const { id } = args
-            const { title, description } = args.path;
+            const { id, title, description } = args.path;
             const updates = {}
             if (title !== undefined) {
                 updates.title = title

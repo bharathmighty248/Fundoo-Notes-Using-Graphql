@@ -15,6 +15,13 @@ const notetypeDefs = gql`
         description: String
     }
 
+    input editInput {
+        id: ID!
+        email: String!
+        title: String
+        description: String
+    }
+
     type Query{
         getAllNotes : [Note] 
         getNotesbyId(id: ID): Note
@@ -22,7 +29,7 @@ const notetypeDefs = gql`
 
     type Mutation {
         createNote(path: NoteInput): Note
-        editNote(id: ID, path: NoteInput): Note
+        editNote(path: editInput): Note
         deleteNote(id: ID): String
     }
 `;

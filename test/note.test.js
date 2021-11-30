@@ -98,5 +98,59 @@ describe("Mutations", () => {
                 }
             });
         });
+
+        // edit Note Testcases
+        test("Given_editNotes_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation editNote($path : editInput) {
+                editNote(path: $path) {
+                    id
+                    email
+                    title
+                    description
+                }
+            }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+        test("Given_editNotes_MutationShouldPass_IfTheFirstArgIsFalse_TheInputHasInvalidField", () => {
+            const mutation = `
+            mutation editNote($path : editInput) {
+                editNote(path: $path) {
+                    id
+                    email
+                    title
+                    description
+                }
+            }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    email: "bharathpasumarthi248@gmail.com",
+                    title: "first note title",
+                    description: "first note description"
+                }
+            });
+        });
+        test("Given_editNotes_MutationShouldPass_IfTheFirstArgIsTrue_TheInputHasvalidField", () => {
+            const mutation = `
+            mutation editNote($path : editInput) {
+                editNote(path: $path) {
+                    id
+                    email
+                    title
+                    description
+                }
+            }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    id: "61a0d1541ebc2fc0ee38d89f",
+                    email: "bharathpasumarthi248@gmail.com",
+                    title: "first note title",
+                    description: "first note description"
+                }
+            });
+        });
     });
 });
