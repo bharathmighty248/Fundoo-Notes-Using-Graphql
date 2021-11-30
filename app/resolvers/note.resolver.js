@@ -38,9 +38,8 @@ const noteresolver = {
             return notes;
         },
 
-        deleteNote: async (_,args) => {
-            const { id } = args
-            await noteModel.findByIdAndDelete(id);
+        deleteNote: async (_, { path }) => {
+            await noteModel.findByIdAndDelete(path.id);
             return "ok, Post deleted"
         }
     }

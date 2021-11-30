@@ -152,5 +152,39 @@ describe("Mutations", () => {
                 }
             });
         });
+
+        // delete Note Testcases
+        test("Given_deleteNotes_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation deleteNote($path: deleteInput) {
+                deleteNote(path: $path)
+            }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+        test("Given_deleteNotes_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
+            const mutation = `
+            mutation deleteNote($path: deleteInput) {
+                deleteNote(path: $path)
+            }
+            `;
+            tester.test(false, mutation, {
+                path : {
+                    email:"bharathpasumarthi248@gmail.com"
+                }
+            });
+        });
+        test("Given_deleteNotes_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasvalidField", () => {
+            const mutation = `
+            mutation deleteNote($path: deleteInput) {
+                deleteNote(path: $path)
+            }
+            `;
+            tester.test(true, mutation, {
+                path : {
+                    id:"61a0d1541ebc2fc0ee38d89f"
+                }
+            });
+        });
     });
 });

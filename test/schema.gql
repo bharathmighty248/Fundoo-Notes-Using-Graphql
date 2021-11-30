@@ -69,6 +69,10 @@ input editInput {
     description: String
 },
 
+input deleteInput {
+    id: ID!
+},
+
 type Query{
     getAllUsers : [User]
     getAllNotes : [Note]
@@ -81,5 +85,5 @@ type Mutation {
     resetPassword( path : resetPassword ):reset
     createNote(path: NoteInput): Note
     editNote(path: editInput): Note
-    deleteNote(id: ID): String
+    deleteNote(path: deleteInput): String
 }
