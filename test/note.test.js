@@ -39,3 +39,64 @@ describe("Query", () => {
         expect(result.data.getAllNotes[0].description).toBe("first note description");
     });
 });
+
+describe("Mutations", () => {
+    let tester;
+    beforeAll(() => {
+        tester = new EasyGraphQLTester(noteSchema);
+    });
+
+    describe("Mutations", () => {
+        // create Note Testcases
+        test("Given_createNotes_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation createNote($path : NoteInput) {
+                createNote(path: $path) {
+                    id
+                    email
+                    title
+                    description
+                }
+            }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+        test("Given_createNotes_MutationShouldPass_IfTheFirstArgIsFalse_TheInputHasInvalidField", () => {
+            const mutation = `
+            mutation createNote($path : NoteInput) {
+                createNote(path: $path) {
+                    id
+                    email
+                    title
+                    description
+                }
+            }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    title: "first note title",
+                    description: "first note description"
+                }
+            });
+        });
+        test("Given_createNotes_MutationShouldPass_IfTheFirstArgIsTrue_TheInputHasvalidField", () => {
+            const mutation = `
+            mutation createNote($path : NoteInput) {
+                createNote(path: $path) {
+                    id
+                    email
+                    title
+                    description
+                }
+            }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    email: "bharathpasumarthi248@gmail.com",
+                    title: "first note title",
+                    description: "first note description"
+                }
+            });
+        });
+    });
+});
