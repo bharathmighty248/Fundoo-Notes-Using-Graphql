@@ -4,7 +4,6 @@ const NoteSchema = new mongoose.Schema(
     {
     email: {
         type: String,
-        required: true
     },
     title: {
         type: String,
@@ -20,4 +19,4 @@ const NoteSchema = new mongoose.Schema(
     },
     );
 
-module.exports = mongoose.model('Notes', NoteSchema);
+module.exports = mongoose.model('noteModel', NoteSchema);

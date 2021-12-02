@@ -3,6 +3,7 @@ const { ApolloServer } = require('apollo-server-express')
 
 require('dotenv').config()
 
+const isAuth = require('./utilities/auth');
 const typeDefs = require('./app/typeDefs/index');
 const resolvers = require('./app/resolvers/index');
 const dbconfig = require('./config/db.config');
@@ -15,6 +16,7 @@ async function startServer() {
     const apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
+        context: isAuth
     });
 
     await apolloServer.start()
@@ -24,7 +26,6 @@ async function startServer() {
     app.use((req,res) => {
         res.send("hello from apollo server");
     });
-
 
     app.listen(process.env.PORT, () => logger.info('server is running on port 4000'))
 }
