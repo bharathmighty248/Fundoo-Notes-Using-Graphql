@@ -16,7 +16,7 @@ const noteresolver = {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
                 const checkNotes = await noteModel.find({ email: context.email });
-                if (!checkNotes) {
+                if (checkNotes.length === 0) {
                     return new Apolloerror.UserInputError('User has not created any notes till now');
                 }
                 return checkNotes

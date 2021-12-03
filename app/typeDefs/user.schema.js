@@ -88,15 +88,13 @@ input LabelInput
 
 type Label
 {
-    id: ID
     labelName: String
-    message: String
 },
 
 type Query{
     getAllUsers : [User]
     getAllNotes : [Note]
-    getLabel(id: ID):Label
+    getAllLabels: [Label]
 },
 
 type Mutation {
@@ -110,6 +108,7 @@ type Mutation {
     editNote(path: editInput): Note
     deleteNote(path: deleteInput): String
 
+    getLabels: [Label]
     createLabel(path: LabelInput):Label
     deleteLabel(id: ID):String
     editLabel(id: ID, path: LabelInput):Label

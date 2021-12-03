@@ -6,13 +6,19 @@ const NoteSchema = new mongoose.Schema(
         type: String,
         required: true
     },
+    labelId: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'label'
+        }]
+    },
     title: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: String
+        required: true
     }
 },
     {

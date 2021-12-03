@@ -3,12 +3,25 @@ const labelModel = require('../models/label.model');
 
 const labelresolver = {
     Query : {
-        getLabel: async (_,{ id }) => {
-            const label = await labelModel.findById(id);
-            return label
-        }
+        getAllLabels: async () =>  await labelModel.find()
     },
     Mutation: {
+        // eslint-disable-next-line no-empty-pattern
+        getLabels: async (_,{ },context) => {
+            try {
+                if (!context.id) {
+                    return new Apolloerror.AuthenticationError('UnAuthenticated');
+                }
+                const checkLabels = await labelModel.find({ userId: context.id });
+                if (checkLabels.length === 0) {
+                    return new Apolloerror.UserInputError('User has not created any Labels till now');
+                }
+                return checkLabels
+            } catch (error) {
+                console.log(error)
+                return new Apolloerror.ApolloError('Internal Server Error');
+            }
+        },
         createLabel: async (_, { path }) => {
             try {
                 const checkLabel = await labelModel.findOne({ labelName: path.labelname });
@@ -24,6 +37,7 @@ const labelresolver = {
                     message: `${path.labelname} created successfully`
                 })
             } catch (error) {
+                console.log(error)
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
