@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const labelSchema = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'userModel'
+        ref: 'user',
+        required: true
     },
 
     noteId: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'noteModel'
+            ref: 'note'
         }]
     },
 
@@ -22,4 +23,4 @@ const labelSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('labelModel', labelSchema);
+module.exports = mongoose.model('label', labelSchema);

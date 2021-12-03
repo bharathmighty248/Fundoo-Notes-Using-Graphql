@@ -12,4 +12,4 @@ const codeSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('resetcodeModel', codeSchema);
+module.exports = mongoose.model('resetcode', codeSchema);

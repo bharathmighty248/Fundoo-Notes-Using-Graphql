@@ -1,7 +1,6 @@
 const Apolloerror = require('apollo-server-errors');
 const userModel = require('../models/user.model');
 const noteModel = require('../models/note.model');
-require('../../utilities/auth');
 
 const noteresolver = {
 
