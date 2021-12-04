@@ -22,13 +22,20 @@ const labelresolver = {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
-        createLabel: async (_, { path }) => {
+        createLabel: async (_, { path }, context) => {
             try {
-                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
-                if (checkLabel) {
-                    return new Apolloerror.UserInputError('label name is already exists..please try another name')
+                if (!context.id) {
+                    return new Apolloerror.AuthenticationError('UnAuthenticated');
+                }
+                const checkLabelId = await labelModel.find({ userId: context.id });
+                if (checkLabelId.length !== 0) {
+                    const checkLabel = checkLabelId.filter((Element) =>  Element.labelName === path.labelname);
+                    if (checkLabel.length !== 0) {
+                        return new Apolloerror.UserInputError('label name is already exists..please try another name')
+                    }
                 }
                 const labelmodel = new labelModel({
+                    userId: context.id,
                     labelName: path.labelname,
                 });
                 await labelmodel.save();

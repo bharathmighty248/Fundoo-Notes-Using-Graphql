@@ -31,5 +31,6 @@ module.exports = {
     quotes: 0,
     'comma-dangle': 0,
     'line-comment-position': 0,
+    'max-len': 0,
   },
 };
