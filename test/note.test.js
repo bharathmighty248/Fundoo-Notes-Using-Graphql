@@ -14,7 +14,7 @@ describe("Query", () => {
         const query = `
         query {
             getAllNotes {
-                id
+                _id
                 email
                 title
                 description
@@ -24,7 +24,7 @@ describe("Query", () => {
         const fixture = {
             data: {
                 getAllNotes: [{
-                    id: "61a0d1541ebc2fc0ee38d89f",
+                    _id: "61a0d1541ebc2fc0ee38d89f",
                     email: "bharathpasumarthi248@gmail.com",
                     title: "first note title",
                     description: "first note description"
@@ -33,7 +33,7 @@ describe("Query", () => {
         }
         tester.setFixture(fixture);
         const result = tester.mock({ query });
-        expect(result.data.getAllNotes[0].id).toBe("61a0d1541ebc2fc0ee38d89f");
+        expect(result.data.getAllNotes[0]._id).toBe("61a0d1541ebc2fc0ee38d89f");
         expect(result.data.getAllNotes[0].email).toBe("bharathpasumarthi248@gmail.com");
         expect(result.data.getAllNotes[0].title).toBe("first note title");
         expect(result.data.getAllNotes[0].description).toBe("first note description");
@@ -46,13 +46,43 @@ describe("Mutations", () => {
         tester = new EasyGraphQLTester(noteSchema);
     });
 
-    describe("Mutations", () => {
+    // getNotes Testcase
+    test("Mocking get Notes", () => {
+        const query = `
+        mutation {
+            getNotes {
+                _id
+                email
+                title
+                description
+            }
+        }`;
+
+        const fixture = {
+            data: {
+                getNotes: [{
+                    _id: "61a0d1541ebc2fc0ee38d89f",
+                    email: "bharathpasumarthi248@gmail.com",
+                    title: "first note title",
+                    description: "first note description"
+                }],
+            },
+        }
+        tester.setFixture(fixture);
+        const result = tester.mock({ query });
+        expect(result.data.getNotes[0]._id).toBe("61a0d1541ebc2fc0ee38d89f");
+        expect(result.data.getNotes[0].email).toBe("bharathpasumarthi248@gmail.com");
+        expect(result.data.getNotes[0].title).toBe("first note title");
+        expect(result.data.getNotes[0].description).toBe("first note description");
+    });
+
+    describe("Mutation", () => {
         // create Note Testcases
         test("Given_createNotes_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
             mutation createNote($path : NoteInput) {
                 createNote(path: $path) {
-                    id
+                    _id
                     email
                     title
                     description
@@ -65,7 +95,7 @@ describe("Mutations", () => {
             const mutation = `
             mutation createNote($path : NoteInput) {
                 createNote(path: $path) {
-                    id
+                    _id
                     email
                     title
                     description
@@ -74,7 +104,7 @@ describe("Mutations", () => {
             `;
             tester.test(false, mutation, {
                 path:{
-                    title: "first note title",
+                    email: "bharathpasumarthi248@gmail.com",
                     description: "first note description"
                 }
             });
@@ -83,7 +113,7 @@ describe("Mutations", () => {
             const mutation = `
             mutation createNote($path : NoteInput) {
                 createNote(path: $path) {
-                    id
+                    _id
                     email
                     title
                     description
@@ -92,7 +122,6 @@ describe("Mutations", () => {
             `;
             tester.test(true, mutation, {
                 path:{
-                    email: "bharathpasumarthi248@gmail.com",
                     title: "first note title",
                     description: "first note description"
                 }
@@ -104,7 +133,7 @@ describe("Mutations", () => {
             const mutation = `
             mutation editNote($path : editInput) {
                 editNote(path: $path) {
-                    id
+                    _id
                     email
                     title
                     description
@@ -117,7 +146,7 @@ describe("Mutations", () => {
             const mutation = `
             mutation editNote($path : editInput) {
                 editNote(path: $path) {
-                    id
+                    _id
                     email
                     title
                     description
@@ -136,7 +165,7 @@ describe("Mutations", () => {
             const mutation = `
             mutation editNote($path : editInput) {
                 editNote(path: $path) {
-                    id
+                    _id
                     email
                     title
                     description
@@ -145,8 +174,7 @@ describe("Mutations", () => {
             `;
             tester.test(true, mutation, {
                 path:{
-                    id: "61a0d1541ebc2fc0ee38d89f",
-                    email: "bharathpasumarthi248@gmail.com",
+                    noteId: "61a0d1541ebc2fc0ee38d89f",
                     title: "first note title",
                     description: "first note description"
                 }
@@ -182,7 +210,7 @@ describe("Mutations", () => {
             `;
             tester.test(true, mutation, {
                 path : {
-                    id:"61a0d1541ebc2fc0ee38d89f"
+                    noteId:"61a0d1541ebc2fc0ee38d89f"
                 }
             });
         });

@@ -60,15 +60,15 @@ input resetPassword{
 },
 
 type Note {
-    noteId: ID
+    _id: ID
     email: String
     title: String
     description: String
 }
 
 input NoteInput {
-    title: String
-    description: String
+    title: String!
+    description: String!
 }
 
 input editInput {

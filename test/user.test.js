@@ -112,7 +112,8 @@ describe("Mutations", () => {
             const mutation = `
             mutation loginUser($path:LoginInput) {
                 loginUser(path: $path) {
-                    id
+                    _id
+                    token
                     firstName
                     lastName
                     email
@@ -125,7 +126,8 @@ describe("Mutations", () => {
             const mutation = `
             mutation loginUser($path:LoginInput) {
                 loginUser(path: $path) {
-                    id
+                    _id
+                    token
                     firstName
                     lastName
                     email
@@ -144,7 +146,8 @@ describe("Mutations", () => {
             const mutation = `
             mutation loginUser($path:LoginInput) {
                 loginUser(path: $path) {
-                    id
+                    _id
+                    token
                     firstName
                     lastName
                     email
