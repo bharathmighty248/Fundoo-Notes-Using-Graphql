@@ -27,9 +27,9 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const checkLabelId = await labelModel.find({ userId: context.id });
-                if (checkLabelId.length !== 0) {
-                    const checkLabel = checkLabelId.filter((Element) =>  Element.labelName === path.labelname);
+                const userLabels = await labelModel.find({ userId: context.id });
+                if (userLabels.length !== 0) {
+                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
                     if (checkLabel.length !== 0) {
                         return new Apolloerror.UserInputError('label name is already exists..please try another name')
                     }
@@ -48,13 +48,27 @@ const labelresolver = {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
-        editLabel: async (_, args) => {
+        editLabel: async (_, { path }, context) => {
             try {
-                const { id } = args
-                const { labelname } = args.path
+                if (!context.id) {
+                    return new Apolloerror.AuthenticationError('UnAuthenticated');
+                }
+                const userLabels = await labelModel.find({ userId: context.id });
+                if (userLabels.length === 0) {
+                    return new Apolloerror.UserInputError('user has not created any Labels yet..')
+                }
+                if (userLabels.length !== 0) {
+                    const checkLabel = userLabels.filter((Element) =>  Element.id === path.id);
+                    if (checkLabel.length === 0) {
+                        return new Apolloerror.UserInputError('This label is not exist or this belongs to another user')
+                    }
+                }
+                const labelId  = path.id
+                // eslint-disable-next-line prefer-destructuring
+                const newLabelname = path.newLabelname
                 const updates = {}
-                updates.labelName = labelname
-                const label = await labelModel.findByIdAndUpdate(id,updates,{ new: true })
+                updates.labelName = newLabelname
+                const label = await labelModel.findByIdAndUpdate(labelId,updates,{ new: true })
                 return label;
             } catch (error) {
                 return new Apolloerror.ApolloError('Internal Server Error');
