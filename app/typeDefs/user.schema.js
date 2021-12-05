@@ -92,6 +92,10 @@ input EditLabelInput
     newLabelname:String!
 },
 
+input deleteLabelInput {
+    labelId: ID!
+},
+
 type Label
 {
     labelName: String
@@ -116,7 +120,7 @@ type Mutation {
 
     getLabels: [Label]
     createLabel(path: LabelInput):Label
-    deleteLabel(id: ID):String
+    deleteLabel(path: deleteLabelInput ):String
     editLabel(path: EditLabelInput):Label
 }
 `;
