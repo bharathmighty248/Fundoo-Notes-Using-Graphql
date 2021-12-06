@@ -48,7 +48,7 @@ const labelresolver = {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
-        editLabel: async (_, { path }, context) => {
+        renameLabel: async (_, { path }, context) => {
             try {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');

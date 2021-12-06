@@ -128,7 +128,7 @@ type Mutation {
     getLabels: [Label]
     createLabel(path: LabelInput):Label
     deleteLabel(path: deleteLabelInput ):String
-    editLabel(path: EditLabelInput):Label
+    renameLabel(path: EditLabelInput):Label
 
     addLabelandNotes(path: addLabelInput): String
 }
