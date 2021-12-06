@@ -149,5 +149,51 @@ describe("Mutations", () => {
                 }
             });
         });
+
+        // rename Label Testcases
+        test("Given_renameLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation renameLabel($path : EditLabelInput) {
+                renameLabel(path: $path){
+                    labelName
+                    noteId
+                }
+            }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+
+        test("Given_renameLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
+            const mutation = `
+            mutation renameLabel($path : EditLabelInput) {
+                renameLabel(path: $path){
+                    labelName
+                    noteId
+                }
+            }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    newLabelname: "new label"
+                }
+            });
+        });
+
+        test("Given_renameLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
+            const mutation = `
+            mutation renameLabel($path : EditLabelInput) {
+                renameLabel(path: $path){
+                    labelName
+                    noteId
+                }
+            }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    id: "6163d98f2137afa6e34d6c95",
+                    newLabelname: "new label"
+                }
+            });
+        });
     });
 });
