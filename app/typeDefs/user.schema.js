@@ -64,6 +64,7 @@ type Note {
     email: String
     title: String
     description: String
+    labelId: [String]
 }
 
 input NoteInput {
@@ -98,8 +99,14 @@ input deleteLabelInput {
 
 type Label
 {
-    labelName: String
+    labelName: String!
+    noteId: [String]!
 },
+
+input addLabelInput{
+    labelId: ID!
+    noteId: ID!
+}
 
 type Query{
     getAllUsers : [User]
@@ -122,6 +129,8 @@ type Mutation {
     createLabel(path: LabelInput):Label
     deleteLabel(path: deleteLabelInput ):String
     editLabel(path: EditLabelInput):Label
+
+    addLabelandNotes(path: addLabelInput): String
 }
 `;
 
