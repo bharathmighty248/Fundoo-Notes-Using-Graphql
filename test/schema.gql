@@ -96,11 +96,13 @@ input deleteLabelInput {
 type Label
 {
     labelName: String
+    noteId: [String]!
 },
 
 type Query{
     getAllUsers : [User]
     getAllNotes : [Note]
+    getAllLabels: [Label]
 },
 
 type Mutation {
