@@ -104,6 +104,11 @@ input addLabelInput{
     noteId: ID!
 },
 
+input removeLabelInput{
+    labelId: ID!
+    noteId: ID!
+},
+
 type Query{
     getAllUsers : [User]
     getAllNotes : [Note]
@@ -127,4 +132,5 @@ type Mutation {
     renameLabel(path: EditLabelInput):Label
 
     addLabelandNotes(path: addLabelInput): String
+    removeLabelandNotes(path: removeLabelInput): String
 }
