@@ -67,4 +67,51 @@ describe("Mutations", () => {
         expect(result.data.getLabels[0].labelName).toBe("first");
         expect(result.data.getLabels[0].noteId[0]).toBe("6163d98f2137afa6e34d6c95");
     });
+
+    describe("Mutation", () => {
+        // create Label Testcases
+        test("Given_createLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation createLabel($path : LabelInput) {
+                createLabel(path: $path) {
+                    labelName
+                    noteId
+                }
+            }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+
+        test("Given_createLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
+            const mutation = `
+            mutation createLabel($path : LabelInput) {
+                createLabel(path: $path) {
+                    labelName
+                    noteId
+                }
+            }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    email: "bharathpasumarthi248@gmail.com"
+                }
+            });
+        });
+
+        test("Given_createLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
+            const mutation = `
+            mutation createLabel($path : LabelInput) {
+                createLabel(path: $path) {
+                    labelName
+                    noteId
+                }
+            }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    labelname: "first"
+                }
+            });
+        });
+    });
 });

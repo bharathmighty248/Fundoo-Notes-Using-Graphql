@@ -117,4 +117,5 @@ type Mutation {
     deleteNote(path: deleteInput): String
 
     getLabels: [Label]
+    createLabel(path: LabelInput):Label
 }
