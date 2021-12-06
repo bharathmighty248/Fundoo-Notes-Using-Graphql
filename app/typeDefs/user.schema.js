@@ -106,6 +106,11 @@ type Label
 input addLabelInput{
     labelId: ID!
     noteId: ID!
+},
+
+input removeLabelInput{
+    labelId: ID!
+    noteId: ID!
 }
 
 type Query{
@@ -131,6 +136,7 @@ type Mutation {
     renameLabel(path: EditLabelInput):Label
 
     addLabelandNotes(path: addLabelInput): String
+    removeLabelandNotes(path: removeLabelInput): String
 }
 `;
 
