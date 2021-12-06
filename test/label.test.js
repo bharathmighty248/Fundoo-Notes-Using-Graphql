@@ -113,5 +113,41 @@ describe("Mutations", () => {
                 }
             });
         });
+
+        // delete Label Testcases
+        test("Given_deleteLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+            const mutation = `
+            mutation deleteLabel($path : deleteLabelInput) {
+                deleteLabel(path: $path)
+            }
+            `;
+            tester.test(false, mutation, { path:{} });
+        });
+
+        test("Given_deleteLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
+            const mutation = `
+            mutation deleteLabel($path : deleteLabelInput) {
+                deleteLabel(path: $path)
+            }
+            `;
+            tester.test(false, mutation, {
+                path:{
+                    labelname: "first"
+                }
+            });
+        });
+
+        test("Given_deleteLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
+            const mutation = `
+            mutation deleteLabel($path : deleteLabelInput) {
+                deleteLabel(path: $path)
+            }
+            `;
+            tester.test(true, mutation, {
+                path:{
+                    labelId: "6163d98f2137afa6e34d6c95"
+                }
+            });
+        });
     });
 });
