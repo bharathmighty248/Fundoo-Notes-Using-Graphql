@@ -56,7 +56,7 @@ const noteresolver = {
                     }
                 }
                 const { noteId, title, description } = path;
-                const updates = {}
+                const updates = { title,description }
                 if (title !== undefined) {
                     updates.title = title
                 }

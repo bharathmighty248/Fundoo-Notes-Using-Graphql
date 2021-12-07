@@ -18,7 +18,6 @@ const labelresolver = {
                 }
                 return checkLabels
             } catch (error) {
-                console.log(error)
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
@@ -27,28 +26,30 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const userLabels = await labelModel.find({ userId: context.id });
-                if (userLabels.length !== 0) {
-                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
-                    if (checkLabel.length !== 0) {
-                        return new Apolloerror.UserInputError('label name is already exists..please try another name')
+                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
+                if (checkLabel) {
+                    for (index = 0; index < checkLabel.noteId.length; index += 1) {
+                        if (JSON.stringify(checkLabel.noteId[index]) === JSON.stringify(path.noteId)) {
+                            return new ApolloError.UserInputError('This note is already added');
+                        }
                     }
+                    checkLabel.noteId.push(path.noteId)
+                    await checkLabel.save();
+                    return "Note Pushed Into Existing Label Sucessfully"
                 }
                 const labelmodel = new labelModel({
                     userId: context.id,
+                    noteId: path.noteId,
                     labelName: path.labelname,
                 });
                 await labelmodel.save();
-                return ({
-                    labelName: path.labelname,
-                    message: `${path.labelname} created successfully`
-                })
+                return "New Label Created Sucessfully"
             } catch (error) {
                 console.log(error)
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
-        renameLabel: async (_, { path }, context) => {
+        editLabel: async (_, { path }, context) => {
             try {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');

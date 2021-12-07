@@ -64,7 +64,6 @@ type Note {
     email: String
     title: String
     description: String
-    labelId: [String]
 }
 
 input NoteInput {
@@ -103,16 +102,6 @@ type Label
 {
     labelName: String!
     noteId: [String]!
-},
-
-input addLabelInput{
-    labelId: ID!
-    noteId: ID!
-},
-
-input removeLabelInput{
-    labelId: ID!
-    noteId: ID!
 },
 
 type Query{
