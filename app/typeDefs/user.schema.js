@@ -84,17 +84,19 @@ input deleteInput {
 
 input LabelInput
 {
+    noteId: ID!
     labelname:String!
 },
 
 input EditLabelInput
 {
-    id: ID!
-    newLabelname:String!
+    noteId: ID
+    labelname: String!
+    newLabelname:String
 },
 
 input deleteLabelInput {
-    labelId: ID!
+    labelname: String!
 },
 
 type Label
@@ -111,7 +113,7 @@ input addLabelInput{
 input removeLabelInput{
     labelId: ID!
     noteId: ID!
-}
+},
 
 type Query{
     getAllUsers : [User]
@@ -131,12 +133,9 @@ type Mutation {
     deleteNote(path: deleteInput): String
 
     getLabels: [Label]
-    createLabel(path: LabelInput):Label
+    createLabel(path: LabelInput):String
     deleteLabel(path: deleteLabelInput ):String
-    renameLabel(path: EditLabelInput):Label
-
-    addLabelandNotes(path: addLabelInput): String
-    removeLabelandNotes(path: removeLabelInput): String
+    editLabel(path: EditLabelInput):String
 }
 `;
 
