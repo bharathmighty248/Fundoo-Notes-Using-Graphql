@@ -94,7 +94,6 @@ const labelresolver = {
                     labelname: path.labelname
                 })
             } catch (error) {
-                console.log(error);
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
@@ -109,13 +108,13 @@ const labelresolver = {
                     return new Apolloerror.UserInputError('user has not created any Labels yet..')
                 }
                 if (userLabels.length !== 0) {
-                    const checkLabel = userLabels.filter((Element) =>  Element.id === path.labelId);
+                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
                     if (checkLabel.length === 0) {
                         return new Apolloerror.UserInputError('This label is not exist or this belongs to another user')
                     }
                 }
-                const id = path.labelId
-                await labelModel.findByIdAndDelete(id)
+                const label = path.labelname
+                await labelModel.findOneAndDelete(label)
                 return "label deleted successfully"
             } catch (error) {
                 return new Apolloerror.ApolloError('Internal Server Error');
