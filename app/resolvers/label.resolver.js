@@ -54,24 +54,47 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const userLabels = await labelModel.find({ userId: context.id });
-                if (userLabels.length === 0) {
-                    return new Apolloerror.UserInputError('user has not created any Labels yet..')
+                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
+                if (!checkLabel) {
+                    return new Apolloerror.UserInputError('Label not found');
                 }
-                if (userLabels.length !== 0) {
-                    const checkLabel = userLabels.filter((Element) =>  Element.id === path.id);
-                    if (checkLabel.length === 0) {
-                        return new Apolloerror.UserInputError('This label is not exist or this belongs to another user')
+                if (path.labelname && path.newLabelname != null) {
+                    await labelModel.findOneAndUpdate({ labelName: path.labelname }, {
+                        labelName: path.newLabelname
+                    }, { new: true });
+                    return "LabelName Edited Sucessfully"
+                }
+                const checkNote = await labelModel.findOne({ noteId: path.noteId });
+                if (!checkNote) {
+                    return new Apolloerror.UserInputError('Note not found');
+                }
+                let index = 0;
+                while (index < checkLabel.noteId.length) {
+                    if (JSON.stringify(checkLabel.noteId[index]) === JSON.stringify(path.noteId)) {
+                        const itemToBeRemoved = checkLabel.noteId[index];
+                        if (checkLabel.noteId.length === 1) {
+                            await labelModel.findByIdAndDelete(checkLabel.id);
+                            return "Note Removed From Label Sucessfully and Empty Label is Removed"
+                        }
+                        await labelModel.findOneAndUpdate(
+                            {
+                                labelName: path.labelname
+                            },
+                            {
+                                $pull: {
+                                    noteId: itemToBeRemoved
+                                },
+                            }
+                        )
+                        return "Note Removed From Label Sucessfully"
                     }
+                    index += 1;
                 }
-                const labelId  = path.id
-                // eslint-disable-next-line prefer-destructuring
-                const newLabelname = path.newLabelname
-                const updates = {}
-                updates.labelName = newLabelname
-                const label = await labelModel.findByIdAndUpdate(labelId,updates,{ new: true })
-                return label;
+                return ({
+                    labelname: path.labelname
+                })
             } catch (error) {
+                console.log(error);
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },

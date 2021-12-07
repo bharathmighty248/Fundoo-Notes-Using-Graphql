@@ -6,8 +6,6 @@ const joiValidation = require('../../utilities/validation');
 const bcryptPassword = require('../../utilities/bcrypt.hash');
 const jwt = require('../../utilities/jwt.token');
 const nodeMailer = require('../../utilities/nodeMailer');
-const noteModel = require('../models/note.model');
-const labelModel = require('../models/label.model');
 
 const userresolver = {
     Query : {

@@ -32,5 +32,6 @@ module.exports = {
     'comma-dangle': 0,
     'line-comment-position': 0,
     'max-len': 0,
+    'no-await-in-loop': 0,
   },
 };
