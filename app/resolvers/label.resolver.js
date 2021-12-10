@@ -1,5 +1,6 @@
 const Apolloerror = require('apollo-server-errors');
 const labelModel = require('../models/label.model');
+const noteModel = require('../models/note.model');
 
 const labelresolver = {
     Query : {
@@ -26,16 +27,33 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
-                if (checkLabel) {
-                    for (index = 0; index < checkLabel.noteId.length; index += 1) {
-                        if (JSON.stringify(checkLabel.noteId[index]) === JSON.stringify(path.noteId)) {
-                            return new ApolloError.UserInputError('This note is already added');
+                const userLabels = await labelModel.find({ userId: context.id });
+                if (userLabels.length !== 0) {
+                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
+                    if (checkLabel.length !== 0) {
+                        const userNotes = await noteModel.find({ email: context.email });
+                        if (userNotes.length === 0) {
+                            return new Apolloerror.UserInputError('User has not created any notes yet..First create Notes');
                         }
+                        if (userNotes.length !== 0) {
+                            const checkNotes = userNotes.filter((Element) =>  Element.id === path.noteId);
+                            if (checkNotes.length === 0) {
+                                return new Apolloerror.UserInputError('This note is not exist or this belongs to another user')
+                            }
+                        }
+                        await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ $addToSet: { noteId: path.noteId } });
+                        return "Note Pushed Into Existing Label Sucessfully"
                     }
-                    checkLabel.noteId.push(path.noteId)
-                    await checkLabel.save();
-                    return "Note Pushed Into Existing Label Sucessfully"
+                }
+                const userNotes = await noteModel.find({ email: context.email });
+                if (userNotes.length === 0) {
+                    return new Apolloerror.UserInputError('User has not created any notes yet..First create Notes');
+                }
+                if (userNotes.length !== 0) {
+                    const checkNotes = userNotes.filter((Element) =>  Element.id === path.noteId);
+                    if (checkNotes.length === 0) {
+                        return new Apolloerror.UserInputError('This note is not exist or this belongs to another user')
+                    }
                 }
                 const labelmodel = new labelModel({
                     userId: context.id,
@@ -54,8 +72,8 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
-                if (!checkLabel) {
+                const userLabel = await labelModel.findOne({ labelName: path.labelname });
+                if (!userLabel) {
                     return new Apolloerror.UserInputError('Label not found');
                 }
                 if (path.labelname && path.newLabelname != null) {
@@ -69,11 +87,11 @@ const labelresolver = {
                     return new Apolloerror.UserInputError('Note not found');
                 }
                 let index = 0;
-                while (index < checkLabel.noteId.length) {
-                    if (JSON.stringify(checkLabel.noteId[index]) === JSON.stringify(path.noteId)) {
-                        const itemToBeRemoved = checkLabel.noteId[index];
-                        if (checkLabel.noteId.length === 1) {
-                            await labelModel.findByIdAndDelete(checkLabel.id);
+                while (index < userLabel.noteId.length) {
+                    if (JSON.stringify(userLabel.noteId[index]) === JSON.stringify(path.noteId)) {
+                        const itemToBeRemoved = userLabel.noteId[index];
+                        if (userLabel.noteId.length === 1) {
+                            await labelModel.findByIdAndDelete(userLabel.id);
                             return "Note Removed From Label Sucessfully and Empty Label is Removed"
                         }
                         await labelModel.findOneAndUpdate(
@@ -108,8 +126,8 @@ const labelresolver = {
                     return new Apolloerror.UserInputError('user has not created any Labels yet..')
                 }
                 if (userLabels.length !== 0) {
-                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
-                    if (checkLabel.length === 0) {
+                    const userLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
+                    if (userLabel.length === 0) {
                         return new Apolloerror.UserInputError('This label is not exist or this belongs to another user')
                     }
                 }
