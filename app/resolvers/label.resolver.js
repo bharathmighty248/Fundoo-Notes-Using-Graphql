@@ -79,7 +79,7 @@ const labelresolver = {
                 if (userLabels.length !== 0) {
                     const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
                     if (checkLabel.length === 0) {
-                        return new Apolloerror.UserInputError('Label not found');
+                        return new Apolloerror.UserInputError('This label is not exist or this belongs to another user');
                     }
                     if (checkLabel.length !== 0) {
                         if (path.noteId != null) {
@@ -103,6 +103,7 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
+
                 const userLabels = await labelModel.find({ userId: context.id });
                 if (userLabels.length === 0) {
                     return new Apolloerror.UserInputError('user has not created any Labels yet..')
