@@ -124,7 +124,7 @@ describe("Mutations", () => {
             `;
             tester.test(false, mutation, {
                 path:{
-                    labelname: "first"
+                    labelId: "6163d98f2137afa6e34d6c95"
                 }
             });
         });
@@ -137,7 +137,7 @@ describe("Mutations", () => {
             `;
             tester.test(true, mutation, {
                 path:{
-                    labelId: "6163d98f2137afa6e34d6c95"
+                    labelname: "first label"
                 }
             });
         });
