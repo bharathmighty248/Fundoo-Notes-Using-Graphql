@@ -86,8 +86,9 @@ input LabelInput
 
 input EditLabelInput
 {
-    id: ID!
-    newLabelname:String!
+    noteId: ID
+    labelname: String!
+    newLabelname: String
 },
 
 input deleteLabelInput {
@@ -98,16 +99,6 @@ type Label
 {
     labelName: String
     noteId: [String]!
-},
-
-input addLabelInput{
-    labelId: ID!
-    noteId: ID!
-},
-
-input removeLabelInput{
-    labelId: ID!
-    noteId: ID!
 },
 
 type Query{
@@ -130,5 +121,5 @@ type Mutation {
     getLabels: [Label]
     addLabel(path: LabelInput):String
     deleteLabel(path: deleteLabelInput ):String
-    renameLabel(path: EditLabelInput):Label
+    editLabel(path: EditLabelInput):String
 }

@@ -142,48 +142,41 @@ describe("Mutations", () => {
             });
         });
 
-        // rename Label Testcases
-        test("Given_renameLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+        // edit Label Testcases
+        test("Given_editLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
-            mutation renameLabel($path : EditLabelInput) {
-                renameLabel(path: $path){
-                    labelName
-                    noteId
-                }
+            mutation editLabel($path : EditLabelInput) {
+                editLabel(path: $path)
             }
             `;
             tester.test(false, mutation, { path:{} });
         });
 
-        test("Given_renameLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
+        test("Given_editLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
             const mutation = `
-            mutation renameLabel($path : EditLabelInput) {
-                renameLabel(path: $path){
-                    labelName
-                    noteId
-                }
+            mutation editLabel($path : EditLabelInput) {
+                editLabel(path: $path)
             }
             `;
             tester.test(false, mutation, {
                 path:{
+                    noteId: "6163d98f2137afa6e34d6c95",
                     newLabelname: "new label"
                 }
             });
         });
 
-        test("Given_renameLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
+        test("Given_editLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
             const mutation = `
-            mutation renameLabel($path : EditLabelInput) {
-                renameLabel(path: $path){
-                    labelName
-                    noteId
-                }
+            mutation editLabel($path : EditLabelInput) {
+                editLabel(path: $path)
             }
             `;
             tester.test(true, mutation, {
                 path:{
-                    id: "6163d98f2137afa6e34d6c95",
-                    newLabelname: "new label"
+                    labelname: "first label",
+                    noteId: "6163d98f2137afa6e34d6c95",
+                    newLabelname: "first edit label"
                 }
             });
         });
