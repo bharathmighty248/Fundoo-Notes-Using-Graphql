@@ -76,20 +76,13 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-
-                const userLabels = await labelModel.find({ userId: context.id });
-                if (userLabels.length === 0) {
-                    return new Apolloerror.UserInputError('user has not created any Labels yet..')
+                const checkLabel = await labelModel.find({ userId: context.id, labelName: path.labelname });
+                if (checkLabel.length !== 0) {
+                    const label = path.labelname
+                    await labelModel.findOneAndDelete(label)
+                    return "label deleted successfully"
                 }
-                if (userLabels.length !== 0) {
-                    const userLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
-                    if (userLabel.length === 0) {
-                        return new Apolloerror.UserInputError('This label is not exist or this belongs to another user')
-                    }
-                }
-                const label = path.labelname
-                await labelModel.findOneAndDelete(label)
-                return "label deleted successfully"
+                return new Apolloerror.UserInputError('This label is not exist or this belongs to another user');
             } catch (error) {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
