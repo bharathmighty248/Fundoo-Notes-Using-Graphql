@@ -53,27 +53,19 @@ const labelresolver = {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const userLabels = await labelModel.find({ userId: context.id });
-                if (userLabels.length === 0) {
-                    return new Apolloerror.UserInputError('user has not created any Labels yet..First create Label')
-                }
-                if (userLabels.length !== 0) {
-                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
-                    if (checkLabel.length === 0) {
-                        return new Apolloerror.UserInputError('This label is not exist or this belongs to another user');
+                const checkLabel = await labelModel.find({ userId: context.id, labelName: path.labelname });
+                if (checkLabel.length !== 0) {
+                    if (path.noteId != null) {
+                        await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ $pull: { noteId: path.noteId } });
                     }
-                    if (checkLabel.length !== 0) {
-                        if (path.noteId != null) {
-                            await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ $pull: { noteId: path.noteId } });
-                        }
-                        if (path.labelname && path.newLabelname != null) {
-                            await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ labelName:path.newLabelname });
-                            await labelModel.find({ userId: context.id }).findOne({ labelName:path.newLabelname }).deleteOne({ noteId:{ $exists: true, $size: 0 } });
-                        }
-                        await labelModel.find({ userId: context.id }).findOne({ labelName:path.labelname }).deleteOne({ noteId:{ $exists: true, $size: 0 } });
-                        return "Label Edited Successfully"
+                    if (path.labelname && path.newLabelname != null) {
+                        await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ labelName:path.newLabelname });
+                        await labelModel.find({ userId: context.id }).findOne({ labelName:path.newLabelname }).deleteOne({ noteId:{ $exists: true, $size: 0 } });
                     }
+                    await labelModel.find({ userId: context.id }).findOne({ labelName:path.labelname }).deleteOne({ noteId:{ $exists: true, $size: 0 } });
+                    return "Label Edited Successfully"
                 }
+                return new Apolloerror.UserInputError('This Label is not exist or this belongs to another user');
             } catch (error) {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
