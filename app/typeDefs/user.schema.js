@@ -122,7 +122,7 @@ type Mutation {
     deleteNote(path: deleteInput): String
 
     getLabels: [Label]
-    createLabel(path: LabelInput):String
+    addLabel(path: LabelInput):String
     deleteLabel(path: deleteLabelInput ):String
     editLabel(path: EditLabelInput):String
 }

@@ -22,38 +22,19 @@ const labelresolver = {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
-        createLabel: async (_, { path }, context) => {
+        addLabel: async (_, { path }, context) => {
             try {
                 if (!context.id) {
                     return new Apolloerror.AuthenticationError('UnAuthenticated');
                 }
-                const userLabels = await labelModel.find({ userId: context.id });
-                if (userLabels.length !== 0) {
-                    const checkLabel = userLabels.filter((Element) =>  Element.labelName === path.labelname);
-                    if (checkLabel.length !== 0) {
-                        const userNotes = await noteModel.find({ email: context.email });
-                        if (userNotes.length === 0) {
-                            return new Apolloerror.UserInputError('User has not created any notes yet..First create Notes');
-                        }
-                        if (userNotes.length !== 0) {
-                            const checkNotes = userNotes.filter((Element) =>  Element.id === path.noteId);
-                            if (checkNotes.length === 0) {
-                                return new Apolloerror.UserInputError('This note is not exist or this belongs to another user')
-                            }
-                        }
-                        await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ $addToSet: { noteId: path.noteId } });
-                        return "Note Pushed Into Existing Label Sucessfully"
-                    }
+                const checkNotes = await noteModel.find({ email: context.email,_id: path.noteId });
+                if (checkNotes.length === 0) {
+                    return new Apolloerror.UserInputError('This note is not exist or this belongs to another user');
                 }
-                const userNotes = await noteModel.find({ email: context.email });
-                if (userNotes.length === 0) {
-                    return new Apolloerror.UserInputError('User has not created any notes yet..First create Notes');
-                }
-                if (userNotes.length !== 0) {
-                    const checkNotes = userNotes.filter((Element) =>  Element.id === path.noteId);
-                    if (checkNotes.length === 0) {
-                        return new Apolloerror.UserInputError('This note is not exist or this belongs to another user')
-                    }
+                const checkLabel = await labelModel.find({ userId: context.id, labelName: path.labelname });
+                if (checkLabel.length !== 0) {
+                    await labelModel.find({ userId: context.id }).findOneAndUpdate({ labelName:path.labelname },{ $addToSet: { noteId: path.noteId } });
+                    return "Note Added Into Existing Label Sucessfully"
                 }
                 const labelmodel = new labelModel({
                     userId: context.id,
@@ -61,7 +42,7 @@ const labelresolver = {
                     labelName: path.labelname,
                 });
                 await labelmodel.save();
-                return "New Label Created Sucessfully"
+                return "note Added Into new Label Sucessfully"
             } catch (error) {
                 console.log(error)
                 return new Apolloerror.ApolloError('Internal Server Error');
