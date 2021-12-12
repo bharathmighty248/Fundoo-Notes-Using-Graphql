@@ -80,6 +80,7 @@ input deleteInput {
 
 input LabelInput
 {
+    noteId: ID!
     labelname:String!
 },
 
@@ -127,10 +128,7 @@ type Mutation {
     deleteNote(path: deleteInput): String
 
     getLabels: [Label]
-    createLabel(path: LabelInput):Label
+    addLabel(path: LabelInput):String
     deleteLabel(path: deleteLabelInput ):String
     renameLabel(path: EditLabelInput):Label
-
-    addLabelandNotes(path: addLabelInput): String
-    removeLabelandNotes(path: removeLabelInput): String
 }

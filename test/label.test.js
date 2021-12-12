@@ -69,26 +69,20 @@ describe("Mutations", () => {
     });
 
     describe("Mutation", () => {
-        // create Label Testcases
-        test("Given_createLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+        // add Label Testcases
+        test("Given_AddLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
             const mutation = `
-            mutation createLabel($path : LabelInput) {
-                createLabel(path: $path) {
-                    labelName
-                    noteId
-                }
+            mutation addLabel($path : LabelInput) {
+                addLabel(path: $path)
             }
             `;
             tester.test(false, mutation, { path:{} });
         });
 
-        test("Given_createLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
+        test("Given_AddLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputHasInvalidField", () => {
             const mutation = `
-            mutation createLabel($path : LabelInput) {
-                createLabel(path: $path) {
-                    labelName
-                    noteId
-                }
+            mutation addLabel($path : LabelInput) {
+                addLabel(path: $path)
             }
             `;
             tester.test(false, mutation, {
@@ -98,18 +92,16 @@ describe("Mutations", () => {
             });
         });
 
-        test("Given_createLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
+        test("Given_AddLabel_MutationShouldPass_IfTheFirstArgIsTrue_AndTheInputHasvalidField", () => {
             const mutation = `
-            mutation createLabel($path : LabelInput) {
-                createLabel(path: $path) {
-                    labelName
-                    noteId
-                }
+            mutation addLabel($path : LabelInput) {
+                addLabel(path: $path)
             }
             `;
             tester.test(true, mutation, {
                 path:{
-                    labelname: "first"
+                    noteId: "6163d98f2137afa6e34d6c95",
+                    labelname: "first label"
                 }
             });
         });
