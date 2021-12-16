@@ -42,7 +42,6 @@ const noteresolver = {
                 redisjs.setData(path.noteId,JSON.stringify(dbnotes));
                 return dbnotes;
             } catch (error) {
-                console.log(error);
                 return new Apolloerror.ApolloError('Internal Server Error')
             }
         },

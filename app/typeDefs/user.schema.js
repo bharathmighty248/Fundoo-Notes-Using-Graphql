@@ -106,6 +106,10 @@ type Label
 
 input notebyId {
     noteId: ID!
+},
+
+input labelbyName{
+    labelname: String!
 }
 
 type Query{
@@ -127,6 +131,7 @@ type Mutation {
     deleteNote(path: deleteInput): String
 
     getLabels: [Label]
+    getLabelbyName(path: labelbyName): [Label]
     addLabel(path: LabelInput):String
     deleteLabel(path: deleteLabelInput ):String
     editLabel(path: EditLabelInput):String

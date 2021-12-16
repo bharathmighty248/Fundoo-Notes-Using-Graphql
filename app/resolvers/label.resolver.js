@@ -1,6 +1,7 @@
 const Apolloerror = require('apollo-server-errors');
 const labelModel = require('../models/label.model');
 const noteModel = require('../models/note.model');
+const redisjs = require('../../utilities/redis');
 
 const labelresolver = {
     Query : {
@@ -22,6 +23,28 @@ const labelresolver = {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
+
+        getLabelbyName: async (_, { path }, context) => {
+            try {
+                if (!context.id) {
+                    return new Apolloerror.AuthenticationError('UnAuthenticated');
+                }
+                const cachevalue = await redisjs.redisLabelbyName(path.labelname);
+                if (cachevalue) {
+                    const doc = JSON.parse(cachevalue);
+                    return doc;
+                }
+                const dblabel = await labelModel.find({ userId: context.id,labelName: path.labelname });
+                if (dblabel.length === 0) {
+                    return new Apolloerror.UserInputError('This label is not exists');
+                }
+                redisjs.setData(path.labelname,JSON.stringify(dblabel));
+                return dblabel;
+            } catch (error) {
+                return new Apolloerror.ApolloError('Internal Server Error');
+            }
+        },
+
         addLabel: async (_, { path }, context) => {
             try {
                 if (!context.id) {
