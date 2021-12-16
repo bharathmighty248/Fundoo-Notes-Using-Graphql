@@ -110,6 +110,7 @@ const noteresolver = {
                     }
                 }
                 await noteModel.findByIdAndDelete(path.noteId);
+                redisjs.clearCache(path.noteId);
                 return "Note deleted successfully"
             } catch (error) {
                 return new Apolloerror.ApolloError('Internal Server Error');
