@@ -65,6 +65,7 @@ const labelresolver = {
                     labelName: path.labelname,
                 });
                 await labelmodel.save();
+                redisjs.clearCache(path.labelname);
                 return "note Added Into new Label Sucessfully"
             } catch (error) {
                 console.log(error)
