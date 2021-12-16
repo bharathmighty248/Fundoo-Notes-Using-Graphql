@@ -87,6 +87,7 @@ const noteresolver = {
                     updates.description = description
                 }
                 const notes = await noteModel.findByIdAndUpdate(noteId, updates, { new: true });
+                redisjs.clearCache(path.noteId);
                 return notes;
             } catch (error) {
                 return new Apolloerror.ApolloError('Internal Server Error');

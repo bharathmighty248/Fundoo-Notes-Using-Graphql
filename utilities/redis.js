@@ -17,6 +17,10 @@ class Redis {
     redisLabelbyName = (key) => {
         const cachevalue = client.get(key);
         return cachevalue;
-    }
+    };
+
+    clearCache = (key) => {
+        client.del(key);
+    };
 }
 module.exports = new Redis();
