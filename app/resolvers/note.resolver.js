@@ -1,5 +1,6 @@
 const Apolloerror = require('apollo-server-errors');
 const noteModel = require('../models/note.model');
+const redisjs = require('../../utilities/redis');
 
 const noteresolver = {
 
@@ -23,6 +24,29 @@ const noteresolver = {
                 return new Apolloerror.ApolloError('Internal Server Error');
             }
         },
+
+        getNotebyId: async (_,{ path },context) => {
+            try {
+                if (!context.id) {
+                    return new Apolloerror.AuthenticationError('UnAuthenticated');
+                }
+                const cachevalue = await redisjs.redisNotebyId(path.noteId);
+                if (cachevalue) {
+                    const doc = JSON.parse(cachevalue);
+                    return doc;
+                }
+                const dbnotes = await noteModel.find({ email: context.email,_id: path.noteId });
+                if (dbnotes.length === 0) {
+                    return new Apolloerror.UserInputError('This notes is not exists');
+                }
+                redisjs.setData(path.noteId,JSON.stringify(dbnotes));
+                return dbnotes;
+            } catch (error) {
+                console.log(error);
+                return new Apolloerror.ApolloError('Internal Server Error')
+            }
+        },
+
         createNote: async (_,{ path }, context) => {
             try {
                 if (!context.id) {

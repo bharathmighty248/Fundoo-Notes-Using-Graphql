@@ -33,5 +33,6 @@ module.exports = {
     'line-comment-position': 0,
     'max-len': 0,
     'no-await-in-loop': 0,
+    'class-methods-use-this': 0,
   },
 };

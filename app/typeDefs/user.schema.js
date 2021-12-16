@@ -104,6 +104,10 @@ type Label
     noteId: [String]!
 },
 
+input notebyId {
+    noteId: ID!
+}
+
 type Query{
     getAllUsers : [User]
     getAllNotes : [Note]
@@ -117,6 +121,7 @@ type Mutation {
     resetPassword( path : resetPassword ):reset
 
     getNotes: [Note]
+    getNotebyId(path: notebyId): [Note]
     createNote(path: NoteInput): Note
     editNote(path: editInput): Note
     deleteNote(path: deleteInput): String
