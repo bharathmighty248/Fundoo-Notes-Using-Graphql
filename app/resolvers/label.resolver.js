@@ -87,6 +87,7 @@ const labelresolver = {
                         await labelModel.find({ userId: context.id }).findOne({ labelName:path.newLabelname }).deleteOne({ noteId:{ $exists: true, $size: 0 } });
                     }
                     await labelModel.find({ userId: context.id }).findOne({ labelName:path.labelname }).deleteOne({ noteId:{ $exists: true, $size: 0 } });
+                    redisjs.clearCache(path.labelname);
                     return "Label Edited Successfully"
                 }
                 return new Apolloerror.UserInputError('This Label is not exist or this belongs to another user');
