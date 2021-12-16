@@ -105,6 +105,7 @@ const labelresolver = {
                 if (checkLabel.length !== 0) {
                     const label = path.labelname
                     await labelModel.findOneAndDelete(label)
+                    redisjs.clearCache(path.labelname);
                     return "label deleted successfully"
                 }
                 return new Apolloerror.UserInputError('This label is not exist or this belongs to another user');
